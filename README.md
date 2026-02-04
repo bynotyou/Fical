@@ -1,4 +1,4 @@
-# Fical (Finance Calculator)
+# Fincal (Finance Calculator)
 Der auf jeden Fall besser als der von Lennart ist.
 
 Logo:
@@ -6,3 +6,4 @@ Logo:
 
 PREMIUM VERSION JETZT VERFÜGBAR:
 <img width="1024" height="1024" alt="popup" src="https://github.com/user-attachments/assets/1f4aa98a-15a8-4644-b10b-5df902e4a5dc" />
+

@@ -8,8 +8,6 @@ import random
 import os
 import winsound
 from tkinter import messagebox
-from scapy.all import IP, TCP, sr1
-import ipaddress
 
 root = tk.Tk()
 root.title("FinanceCalc Pro Max Ultra")
@@ -189,7 +187,7 @@ def calculate():
         return
 
     investment_params = {
-    "aktien":      {"r": 0.15, "o": 0.15},
+    "aktien":      {"r": 0.10, "o": 0.15},
     "immobilien": {"r": 0.08, "o": 0.10},
     "anleihen":   {"r": 0.03, "o": 0.05},
     "edelmetalle":{"r": 0.05, "o": 0.12},
@@ -466,91 +464,98 @@ class ai:
                 root.after(500, calculate())
         type_text()
 
-    @staticmethod
-    def portscanner():
-        global ip_entry, scan_button, answer_label
-        ai_button1.destroy()
-        ai_button2.destroy()
+    # @staticmethod
+    # def portscanner():
+    #     global ip_entry, scan_button, answer_label
+    #     try:
+    #         from scapy.all import IP, TCP, sr1
+    #         import ipaddress
+    #     except Exception as e:
+    #         sniff = None
+    #         answer_label.config(text="Fehler beim Laden von Modulen für den Portscanner: ", fg="red")
+    #     ai_button1.destroy()
+    #     ai_button2.destroy()
 
-        answer_label.config(text="Klar! Trage die IP-Adresse ein, die du scannen möchtest.")
+    #     answer_label.config(text="Klar! Trage die IP-Adresse ein, die du scannen möchtest.")
 
 
-        ip_entry = ttk.Entry(root, width=30)
-        ip_entry.place(x=300, y=250, anchor="center")
-        scan_button = tk.Button(root, text="Scan starten", command=lambda: ai.start_portscan(ip_entry.get()))
-        scan_button.place(x=300, y=275, anchor="center")
+    #     ip_entry = ttk.Entry(root, width=30)
+    #     ip_entry.place(x=300, y=250, anchor="center")
+    #     scan_button = tk.Button(root, text="Scan starten", command=lambda: ai.start_portscan(ip_entry.get()))
+    #     scan_button.place(x=300, y=275, anchor="center")
         
-    @staticmethod
-    def start_portscan(ip_address):
-        global ip_entry, scan_button, portscanner_open_ports
-        portscanner_open_ports = []
-        try:
-            ipaddress.ip_address(ip_address)
-        except ValueError:
-            answer_label.config(text="Diese IP-Adresse ist ungültig.", fg="red")
-            return
+    # @staticmethod
+    # def start_portscan(ip_address):
+    #     global ip_entry, scan_button, portscanner_open_ports
+    #     portscanner_open_ports = []
+    #     try:
+    #         ipaddress.ip_address(ip_address)
+    #     except ValueError:
+    #         answer_label.config(text="Diese IP-Adresse ist ungültig.", fg="red")
+    #         return
         
-        answer_label.config(text="Starte Portscan...", fg="black")
+    #     answer_label.config(text="Starte Portscan...", fg="black")
 
-        ip_entry.destroy()
-        scan_button.destroy()
+    #     ip_entry.destroy()
+    #     scan_button.destroy()
 
-        for port in range(1, 1025):
-            pkt = IP(dst=ip_address) / TCP(dport=port, flags="S")
-            response = sr1(pkt, timeout=0.5, verbose=False)
-            if response and response.haslayer(TCP) and response[TCP].flags == 0x12:
-                portscanner_open_ports.append(port)
-            else:
-                pass
+    #     for port in range(1, 1025):
+    #         pkt = IP(dst=ip_address) / TCP(dport=port, flags="S")
+    #         response = sr1(pkt, timeout=0.5, verbose=False)
+    #         if response and response.haslayer(TCP) and response[TCP].flags == 0x12:
+    #             portscanner_open_ports.append(port)
+    #         else:
+    #             pass
 
-        if portscanner_open_ports == []:
-            answer = f"Es wurden keine offenen Ports auf {ip_address} gefunden."
-        else:
-            answer = f"Offene Ports auf {ip_address}: {', '.join(map(str, portscanner_open_ports))}"
+    #     if portscanner_open_ports == []:
+    #         answer = f"Es wurden keine offenen Ports auf {ip_address} gefunden."
+    #     else:
+    #         answer = f"Offene Ports auf {ip_address}: {', '.join(map(str, portscanner_open_ports))}"
 
-        portscanner_label = tk.Label(root, text="")
-        portscanner_label.place(x=300, y=400, anchor="center")
+    #     portscanner_label = tk.Label(root, text="")
+    #     portscanner_label.place(x=300, y=400, anchor="center")
 
-        def type_text(index=0):
-            if index < len(answer):
-                portscanner_label.config(text=portscanner_label.cget("text") + answer[index])
-                root.after(50, type_text, index + 1)
+    #     def type_text(index=0):
+    #         if index < len(answer):
+    #             portscanner_label.config(text=portscanner_label.cget("text") + answer[index])
+    #             root.after(50, type_text, index + 1)
 
-            else:
-                print(portscanner_open_ports)
+    #         else:
+    #             print(portscanner_open_ports)
 
-                if portscanner_open_ports != []:
-                    global print_button
-                    print_button = tk.Button(root, text="Ergebnisse ausdrucken", command=lambda: ai.portscanner_results(ip_address))
-                    print_button.place(x=300, y=470, anchor="center")
+    #             if portscanner_open_ports != []:
+    #                 global print_button
+    #                 print_button = tk.Button(root, text="Ergebnisse ausdrucken", command=lambda: ai.portscanner_results(ip_address))
+    #                 print_button.place(x=300, y=470, anchor="center")
 
-                else:
-                    pass
-        type_text()
+    #             else:
+    #                 pass
+    #     type_text()
 
 
-    @staticmethod
-    def portscanner_results(ip_address):
-        global print_button, portscanner_open_ports, answer_label
+    # @staticmethod
+    # def portscanner_results(ip_address):
+    #     global print_button, portscanner_open_ports, answer_label
 
-        current_dir = os.path.dirname(os.path.abspath(__file__))
+    #     current_dir = os.path.dirname(os.path.abspath(__file__))
 
-        with open(f"{current_dir}\\portscanner_results.txt", "w") as file:
-            file.write(f"Offene Ports bei {ip_address}:\n")
-            for port in portscanner_open_ports:
-                file.write(f"{port}\n")
+    #     with open(f"{current_dir}\\portscanner_results.txt", "w") as file:
+    #         file.write(f"Offene Ports bei {ip_address}:\n")
+    #         for port in portscanner_open_ports:
+    #             file.write(f"{port}\n")
 
-        answer_label.config(text="")
+    #     answer_label.config(text="")
 
-        answer = "Die Ergebnisse wurden in 'portscanner_results.txt' gespeichert."
+    #     answer = "Die Ergebnisse wurden in 'portscanner_results.txt' gespeichert."
 
-        def type_text(index=0):
-            if index < len(answer):
-                answer_label.config(text=answer_label.cget("text") + answer[index])
-                root.after(50, type_text, index + 1)
-        type_text()
+    #     def type_text(index=0):
+    #         if index < len(answer):
+    #             answer_label.config(text=answer_label.cget("text") + answer[index])
+    #             root.after(50, type_text, index + 1)
+    #     type_text()
 
-        print_button.config(state=tk.DISABLED)
+    #     print_button.config(state=tk.DISABLED)
+    
 
     @staticmethod
     def ai_chat():
@@ -573,7 +578,7 @@ class ai:
         ai_button1 = tk.Button(root, text="Ich möchte einen Test Durchlauf mit zufälligen Zahlen.", command=ai.testdurchlauf)
         ai_button1.place(x=300, y=300, anchor="center")
 
-        ai_button2 = tk.Button(root, text="Starte einen Portscanner", command=ai.portscanner)
+        ai_button2 = tk.Button(root, text="Starte einen Portscanner")
         ai_button2.place(x=300, y=350, anchor="center")
 
         ai_back = tk.Button(root, text="Zurück", command=main_menu)
